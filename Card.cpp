@@ -26,7 +26,7 @@ bool Card::check()
 {
 	Again:
 	string choose;
-	printf("确认请输入Y,取消请输入N\n");
+	printf("\t\t\t确认请输入Y,取消请输入N\n");
 	cin >> choose;
 	if (choose == "Y" || choose == "y")
 		return true;

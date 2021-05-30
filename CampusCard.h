@@ -4,8 +4,7 @@ class CampusCard :public Card
 {
 	static Card*instance;
 public:
-	void showCards();
-	void showCards(int id);
+	void showCards(int id=0);
 	void applyCard();
 	void menu();
 	void deposit(int id);

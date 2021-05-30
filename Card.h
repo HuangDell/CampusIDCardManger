@@ -5,7 +5,16 @@
 #include <iostream>
 #include <string>
 #include <sstream>
-
+#define LENGTH 38
+#define FOCUS() printf("\t\t\t")
+inline void drawLine(int length,int tab=3) //»æ»­±í¸ñ
+{
+	for(int i=0;i<tab;i++)
+	printf("\t");
+	for (int i = 0; i < length; i++)
+		printf("-");
+	puts("");
+}
 class Card
 {
 protected:

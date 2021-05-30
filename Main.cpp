@@ -15,10 +15,16 @@ int main(void)
 {
 	int choose;
 	Card* card=NULL;
+	system("mode con: cols=102 lines=34");//设置程序边框的大小
+	system("color F0");//设置程序的背景色和前景色
 	while (true)
 	{
 		system("cls");
-		printf("1.管理校园卡业务    2.管理储蓄卡业务\n");
+		printf("\t\t\t\t    智能卡管理系统\n");
+		drawLine(LENGTH);
+		printf("\t\t\t|1.管理校园卡业务    2.管理储蓄卡业务|\n");
+		drawLine(LENGTH);
+		FOCUS();
 		 cin >> choose;
 		switch (choose)
 		{
@@ -30,6 +36,7 @@ int main(void)
 			break;
 		}
 		card->menu();
+		FOCUS();
 		system("pause");
 	}
 }
