@@ -21,23 +21,6 @@ void Card::applyCard(int &id,string &name)
 	}
 }
 
-void Card::showCards()
-{
-
-}
-
-void Card::deposit(int money)
-{
-
-}
-void Card::pay(int money)
-{
-
-}
-void Card::find(int id, std::string table)
-{
-
-}
 
 bool Card::check()
 {
@@ -53,11 +36,12 @@ bool Card::check()
 		goto Again;
 }
 
-void Card::showRecord(string&& table, int id)
+void Card::showRecord(string table, int id)
 {
-	if (id)
+	auto records = connector->getRecord(table, id);
+	printf("流水号\t卡号\t类型\t记录\t\t\t日期\t\n");
+	for (auto record : records)
 	{
-		
+		printf("%lld %d %s %s %s\n", record.xID, record.ID, record.Type.c_str(), record.What.c_str(), record.Date.c_str());
 	}
-
 }

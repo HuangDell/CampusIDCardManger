@@ -30,6 +30,9 @@
     <ClCompile Include="DepositCard.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="Mode.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SQLConnector.h">
@@ -51,6 +54,9 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="Token.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Record.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

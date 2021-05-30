@@ -104,3 +104,25 @@ void SQLConnector::record(string&& table, int& id, string& info)//记录流水
 	string insert = "insert into turnover (ID,Type,What,Date) values(" + to_string(id) + ",'"+t+"','"+info+"',NOW())";
 	state->execute(insert);
 }
+
+vector<Record> SQLConnector::getRecord(string table, int id)
+{
+	vector<Record> records;
+	string type = table == "campuscard" ? "'校园卡'" : "'储蓄卡'";
+	string query;
+	query = "select * from turnover where Type=" + type;
+	if (id)
+		query += " and ID=" + to_string(id);
+	unique_ptr <ResultSet> res(state->executeQuery(query));
+	while (res->next())
+	{
+		Record record;
+		record.xID = res->getInt64("xID");
+		record.ID = res->getInt("ID");
+		record.Date = res->getString("Date");
+		record.Type = res->getString("Type");
+		record.What = res->getString("What");
+		records.push_back(record);
+	}
+	return records;
+}

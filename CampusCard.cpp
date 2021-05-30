@@ -60,7 +60,7 @@ void CampusCard::showCards(int id)
 		case 2:
 			deposit(id);
 		case 3:
-
+			showRecord("campuscard", id);
 		default:
 			break;
 		}

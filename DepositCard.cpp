@@ -49,6 +49,9 @@ void DepositCard::showCards(int id)
 			break;
 		case 2:deposit(id);
 			break;
+		case 3:
+			showRecord("depositcard", id);
+			break;
 
 		}
 	}

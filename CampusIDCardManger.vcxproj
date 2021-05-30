@@ -153,6 +153,7 @@
     <ClCompile Include="DepositCard.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="SQLConnector.cpp" />
+    <ClCompile Include="Mode.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Mysql++\Mysql++\json.hpp" />
@@ -160,6 +161,7 @@
     <ClInclude Include="CampusCard.h" />
     <ClInclude Include="Card.h" />
     <ClInclude Include="DepositCard.h" />
+    <ClInclude Include="Record.h" />
     <ClInclude Include="SQLConnector.h" />
     <ClInclude Include="Token.h" />
   </ItemGroup>

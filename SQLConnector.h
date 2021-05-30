@@ -3,6 +3,7 @@
 #include <string>
 #include <vector>
 #include "Token.h"
+#include "Record.h"
 
 class SQLConnector
 {
@@ -21,5 +22,6 @@ public:
 	void record(std::string&& table, int& id, std::string &info);
 	std::vector<Token> getCard(std::string && table,int id=0);
 	static SQLConnector* getInstance() { return connector; }
+	std::vector<Record> getRecord(std::string table, int id = 0);
 };
 
