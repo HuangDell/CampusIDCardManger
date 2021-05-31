@@ -23,7 +23,10 @@ void DepositCard::menu()
 			int id;
 			printf("\t\t\t请输入查询的卡号:");
 			cin >> id;
-			showCards(id);
+			if (connector->getCard("depositcard", id).size() == 0)
+				printf("\t\t\t未查询到卡号为:%d的储蓄卡。\n", id);
+			else
+				showCards(id);
 			break;
 		case 3:
 			applyCard();
@@ -39,6 +42,8 @@ void DepositCard::menu()
 void DepositCard::showCards(int id)
 {
 	auto tokens = connector->getCard("depositcard", id);
+	system("cls");
+	printf("\t\t\t\t    储蓄卡管理系统\n");
 	drawLine(67, 1);
 	printf("\t|ID\t   姓名\t\t学号\t  余额\t绑定的校园卡\t开卡日期  |\n");
 	for (auto& token : tokens)
@@ -50,8 +55,9 @@ void DepositCard::showCards(int id)
 		printf("\t\t\t当前账户支持以下操作:\n");
 		drawLine(28);
 		printf("\t\t\t|1. 绑定校园卡  2. 充值卡片|\n");
-		printf("\t\t\t|3. 查看流水       \t   |\n");
+		printf("\t\t\t|3. 查看流水    3. 返回菜单|\n");
 		drawLine(28);
+		FOCUS();
 		cin >> choose;
 		switch (choose)
 		{
@@ -70,6 +76,11 @@ void DepositCard::showCards(int id)
 void DepositCard::binding(int deposit)
 {
 	int campus;
+	if (connector->getCard("depositcard", deposit)[0].bindingid.size())
+	{
+		printf("\t\t\t您已达绑定校园卡数目上限！\n");
+		return;
+	}
 	Again:
 	printf("\t\t\t请输入需要绑定的校园卡号：");
 	cin >> campus;
@@ -102,18 +113,23 @@ void DepositCard::applyCard()
 	Token token;
 	Card::applyCard(token.studyid,token.name);
 	printf("\t\t\t您的学号是%d，您的姓名是%s。\n",token.studyid,token.name.c_str());
-	if (check())
+	if (connector->check("depositcard", token.studyid))
 	{
-		int id_card = connector->applyCard("depositcard",token);
-		printf("\t\t\t您的储蓄卡办理成功，卡号是：%d\n", id_card);
-		printf("\t\t\t是否立即绑定校园卡？\n");
-		if (check())
-		{
-			binding(id_card);
-		}
+		printf("\t\t\t您已达储蓄卡办理数目上限！\n");
 	}
 	else
-		goto Again;
+		if (check())
+		{
+			int id_card = connector->applyCard("depositcard", token);
+			printf("\t\t\t您的储蓄卡办理成功，卡号是：%d\n", id_card);
+			printf("\t\t\t是否立即绑定校园卡？\n");
+			if (check())
+			{
+				binding(id_card);
+			}
+		}
+		else
+			goto Again;
 }
 
 void DepositCard::deposit(int deposit)

@@ -4,21 +4,22 @@ using namespace std;
 
 void Card::applyCard(int &id,string &name)
 {
-	printf("请输入你的姓名：");
+	printf("\t\t\t请输入你的姓名：");
 	while(cin >> name)
 	{
 		if (name[0] >= '0' && name[0] <= '9')
-			printf("输入有误，请重新输入：");
+			printf("\t\t\t输入有误，请重新输入：");
 		else
 			break;
 	}
-	printf("请输入你的学号(8位)：");
-	while (!(cin >> id))
+	printf("\t\t\t请输入你的学号(8位)：");
+	while (!(cin >> id)|| to_string(id).size()!=8)
 	{
-		printf("输入有误，请重新输入：");
+		printf("\t\t\t输入有误，请重新输入：");
 		cin.clear();
 		fflush(stdin);
 	}
+
 }
 
 
@@ -27,6 +28,7 @@ bool Card::check()
 	Again:
 	string choose;
 	printf("\t\t\t确认请输入Y,取消请输入N\n");
+	FOCUS();
 	cin >> choose;
 	if (choose == "Y" || choose == "y")
 		return true;
@@ -39,9 +41,9 @@ bool Card::check()
 void Card::showRecord(string table, int id)
 {
 	auto records = connector->getRecord(table, id);
-	printf("流水号\t卡号\t类型\t记录\t\t\t日期\t\n");
+	drawLine(68, 1);
+	printf("\t|流水号     卡号     类型   记录\t\t日期\t           |\n");
 	for (auto record : records)
-	{
-		printf("%lld %d %s %s %s\n", record.xID, record.ID, record.Type.c_str(), record.What.c_str(), record.Date.c_str());
-	}
+		printf("\t|%lld %d %s %-16s    %s|\n", record.xID, record.ID, record.Type.c_str(), record.What.c_str(), record.Date.c_str());
+	drawLine(68, 1);
 }

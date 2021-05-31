@@ -23,5 +23,6 @@ public:
 	std::vector<Token> getCard(std::string && table,int id=0);
 	static SQLConnector* getInstance() { return connector; }
 	std::vector<Record> getRecord(std::string table, int id = 0);
+	bool check(string && table,int studyID);
 };
 

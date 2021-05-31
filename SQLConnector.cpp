@@ -62,7 +62,7 @@ void SQLConnector::updateCard(string && table,Token&token,string mode)
 	if (mode == "bind")//两种更新情况，一是绑定卡更新
 			update = "update " + table + " set BindingID=CONCAT(IFNULL(BindingID,''),'" +token.bindingid + " ') where ID=" + to_string(token.id);
 	else if (mode == "money")//二是金额更新
-		update = "update " + table + " set Money=" + to_string(token.money);
+		update = "update " + table + " set Money=" + to_string(token.money)+" where ID="+to_string(token.id);
 	state->executeUpdate(update);
 
 }
@@ -125,4 +125,14 @@ vector<Record> SQLConnector::getRecord(string table, int id)
 		records.push_back(record);
 	}
 	return records;
+}
+
+bool SQLConnector::check(string &&table,int studyID)
+{
+	int count = table == "campuscard" ? 1 : 3;
+	string query = "select ID from "+table+" where StudyID="+to_string(studyID);
+	unique_ptr <ResultSet> res(state->executeQuery(query));
+	for(int i=0;i<count;i++)
+	res->next();
+	return res != NULL;
 }
