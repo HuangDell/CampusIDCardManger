@@ -9,6 +9,6 @@ public:
 	void showCards(int id=0);
 	void binding(int id);
 	void deposit(int id);
-	static Card* getInstance() { return instance; }
 	void  transfer(int id);
+	static Card* getInstance() { return instance; }
 };

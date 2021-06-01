@@ -23,6 +23,7 @@ protected:
 public:
 	virtual void applyCard(int &id,std::string &name);
 	virtual void  menu() = 0;
+	virtual void showCards(int id = 0) = 0;
 	bool check();
 	void showRecord(std::string table, int id = 0);
 };

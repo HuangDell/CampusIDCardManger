@@ -42,7 +42,7 @@ void Card::showRecord(string table, int id)
 {
 	auto records = connector->getRecord(table, id);
 	drawLine(70, 1);
-	printf("\t|流水号     卡号     类型   记录\t\t日期\t             |\n");
+	printf("\t|流水号     卡号     类型   记录\t\t  日期\t             |\n");
 	for (auto record : records)
 		printf("\t|%lld %d %s %-18s    %s|\n", record.xID, record.ID, record.Type.c_str(), record.What.c_str(), record.Date.c_str());
 	drawLine(70, 1);
