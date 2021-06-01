@@ -9,6 +9,7 @@ public:
 	void menu();
 	void deposit(int id);
 	void binding(int id);
+	void cost(int id);
 
 	static Card* getInstance() { return instance; }
 };

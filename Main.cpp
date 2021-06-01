@@ -34,6 +34,11 @@ int main(void)
 		case 2:
 			card = DepositCard::getInstance();
 			break;
+		default:
+			//fflush(stdin);
+			cin.clear();
+			cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+			continue;
 		}
 		card->menu();
 		FOCUS();

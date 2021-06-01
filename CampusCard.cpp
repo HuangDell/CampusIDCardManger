@@ -1,6 +1,6 @@
 #include "CampusCard.h"
 using namespace std;
-
+extern bool cmp(Token, Token);
 
 void CampusCard::menu()
 {
@@ -35,7 +35,9 @@ void CampusCard::menu()
 		case 4:
 			return;
 		default:
-			break;
+			cin.clear();
+			cin.ignore(numeric_limits<streamsize>::max(),'\n');;
+			continue;
 		}
 		FOCUS();
 		system("pause");
@@ -65,7 +67,8 @@ void CampusCard::showCards(int id)
 		printf("\t\t\t当前账户支持以下操作：\n");
 		drawLine(28);
 		printf("\t\t\t|1. 绑定储蓄卡  2. 充值卡片|\n");
-		printf("\t\t\t|3. 查看流水    4. 返回菜单|\n");
+		printf("\t\t\t|3. 查看流水    4. 消费    |\n");
+		printf("\t\t\t|5. 返回菜单               |\n");
 		drawLine(28);
 		FOCUS();
 		cin >> choose;
@@ -81,8 +84,12 @@ void CampusCard::showCards(int id)
 			showRecord("campuscard", id);
 			break;
 		case 4:
+			cost(id);
+		case 5:
 			return;
 		default:
+			cin.clear();
+			cin.ignore(numeric_limits<streamsize>::max(),'\n');
 			break;
 		}
 	}
@@ -107,7 +114,12 @@ void CampusCard::deposit(int campus)
 		printf("\n");
 	Again:
 		printf("\t\t\t请选择转账的储蓄卡:");
-		cin >> ch_id;
+		while (!(cin >> ch_id))
+		{
+			printf("\t\t\t请重新输入:");
+			cin.clear();
+			cin.ignore(numeric_limits<streamsize>::max(),'\n');;
+		}
 		for (auto temp : deposit_cards)
 			if (temp == ch_id)
 			{
@@ -135,6 +147,8 @@ void CampusCard::deposit(int campus)
 				token.money += money;
 				break;
 			}
+			cin.clear();
+			cin.ignore(numeric_limits<streamsize>::max(),'\n');;
 		}
 		if (check())
 		{
@@ -168,7 +182,12 @@ void CampusCard::binding(int campus)
 	}
 	Again:
 	printf("\t\t\t请输入需要绑定的储蓄卡号:");
-	cin >> deposit;
+	while (!(cin >> deposit))
+	{
+			printf("\t\t\t请重新输入:");
+			cin.clear();
+			cin.ignore(numeric_limits<streamsize>::max(),'\n');;
+	}
 	auto tokens = connector->getCard("depositcard",deposit);
 	if(tokens.empty())
 	{
@@ -184,7 +203,7 @@ void CampusCard::binding(int campus)
 			auto campus_token = connector->getCard("campuscard", campus)[0];
 			campus_token.bindingid = to_string(deposit);
 			connector->updateCard("campuscard",campus_token, "bind");
-			string info = "绑定储蓄卡:" + std::to_string(deposit);
+			string info = "绑定储蓄卡" + std::to_string(deposit);
 			connector->record("campuscard", campus, info);
 		}
 		else
@@ -198,9 +217,8 @@ void CampusCard::applyCard()
 	Token token;
 	Card::applyCard(token.studyid, token.name);
 	if(connector->check("campuscard",token.studyid))
-				return;
 	{ 
-		printf("\t\t\t该学号已经申请过校园卡!");
+		printf("\t\t\t该学号已经申请过校园卡!\n");
 		return;
 	}
 	printf("\t\t\t请输入你所在的学院：");
@@ -213,6 +231,93 @@ void CampusCard::applyCard()
 		string info = "开通校园卡";
 		connector->record("campuscard", id_card, info);
 	}
-	else
-		goto Again;
 }
+
+void CampusCard::cost(int id)
+{
+	int cost;
+	auto campus_token = connector->getCard("campuscard", id)[0];
+	printf("\t\t\t请输入你想要消费的金额:");
+	while (!(cin >> cost))
+	{
+		if (cost <= 0)
+			printf("\t\t\t请重新输入:");
+		else if (campus_token.money < cost && campus_token.bindingid.size() != 0)
+		{
+			printf("\t\t\t余额不足!已绑定储蓄卡,是否组合支付?\n");
+			if (check())
+			{
+				cost -= campus_token.money;
+				string info = "消费:" + to_string(campus_token.money) + "元";
+				connector->updateCard("depositcard", campus_token, "money");
+				connector->record("campuscard", id, info);
+				std::stringstream ss(campus_token.bindingid);
+				std::vector<int> deposit_cards;
+				int temp;
+				while (ss >> temp)
+					deposit_cards.push_back(temp);
+				vector<Token> deposit;
+				for (auto& num : deposit_cards)
+					deposit.push_back(connector->getCard("depositcard", num)[0]);
+				sort(deposit.begin(), deposit.end(), cmp);
+				int sum = 0;
+				for (auto& token : deposit)
+					sum += token.money;
+				if (sum < cost)
+				{
+					printf("\t\t\t组合支付余额不足!\n");
+					return;
+				}
+				if (deposit[0].money < cost)
+				{
+					string info = "消费:" + to_string(deposit[0].money) + "元";
+					deposit[0].money = 0;
+					cost -= deposit[0].money;
+					connector->record("depositcard", deposit[0].id, info);
+				}
+				else if (deposit[0].money >= cost)
+				{
+					string info = "消费:" + to_string(cost) + "元";
+					deposit[0].money -= cost;
+					cost = 0;
+					connector->record("depositcard", deposit[0].id, info);
+				}
+				if (deposit[1].money < cost)
+				{
+					string info = "消费:" + to_string(deposit[1].money) + "元";
+					deposit[1].money = 0;
+					cost -= deposit[1].money;
+					connector->record("depositcard", deposit[1].id, info);
+				}
+				else if (deposit[1].money >= cost && cost != 0)
+				{
+					string info = "消费:" + to_string(cost) + "元";
+					deposit[1].money -= cost;
+					cost = 0;
+					connector->record("depositcard", deposit[1].id, info);
+				}
+				if (cost != 0)
+				{
+					string info = "消费:" + to_string(cost) + "元";
+					deposit[2].money -= cost;
+					connector->record("depositcard", deposit[2].id, info);
+				}
+				for (auto& token : deposit)
+					connector->updateCard("depositcard", token, "money");
+				printf("\t\t\t消费成功\n");
+				return;
+			}
+		}
+		else
+			printf("\t\t\t请重新输入:");
+			cin.clear();
+			cin.ignore(numeric_limits<streamsize>::max(),'\n');;
+	
+	}
+	campus_token.money -= cost;
+	string info = "消费:" + to_string(cost) + "元";
+	connector->updateCard("depositcard", campus_token, "money");
+	connector->record("campuscard", id, info);
+}
+
+

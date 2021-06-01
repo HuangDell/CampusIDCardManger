@@ -10,4 +10,5 @@ public:
 	void binding(int id);
 	void deposit(int id);
 	static Card* getInstance() { return instance; }
+	void  transfer(int id);
 };

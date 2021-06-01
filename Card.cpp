@@ -15,9 +15,9 @@ void Card::applyCard(int &id,string &name)
 	printf("\t\t\t请输入你的学号(8位)：");
 	while (!(cin >> id)|| to_string(id).size()!=8)
 	{
-		printf("\t\t\t输入有误，请重新输入：");
+		printf("\t\t\t请重新输入:");
 		cin.clear();
-		fflush(stdin);
+		cin.ignore(numeric_limits<streamsize>::max(), '\n');
 	}
 
 }
@@ -41,9 +41,15 @@ bool Card::check()
 void Card::showRecord(string table, int id)
 {
 	auto records = connector->getRecord(table, id);
-	drawLine(68, 1);
-	printf("\t|流水号     卡号     类型   记录\t\t日期\t           |\n");
+	drawLine(70, 1);
+	printf("\t|流水号     卡号     类型   记录\t\t日期\t             |\n");
 	for (auto record : records)
-		printf("\t|%lld %d %s %-16s    %s|\n", record.xID, record.ID, record.Type.c_str(), record.What.c_str(), record.Date.c_str());
-	drawLine(68, 1);
+		printf("\t|%lld %d %s %-18s    %s|\n", record.xID, record.ID, record.Type.c_str(), record.What.c_str(), record.Date.c_str());
+	drawLine(70, 1);
+}
+
+
+ bool cmp(Token t1, Token t2)
+{
+	return t1.money > t2.money;
 }

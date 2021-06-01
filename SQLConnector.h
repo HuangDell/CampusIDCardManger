@@ -18,8 +18,8 @@ private:
 
 public:
 	int applyCard(std::string && table,Token &token);
-	void updateCard(std::string&& table,Token&,std::string);
-	void record(std::string&& table, int& id, std::string &info);
+	void updateCard(std::string table,Token&,std::string);
+	void record(std::string table, int& id, std::string &info);
 	std::vector<Token> getCard(std::string && table,int id=0);
 	static SQLConnector* getInstance() { return connector; }
 	std::vector<Record> getRecord(std::string table, int id = 0);

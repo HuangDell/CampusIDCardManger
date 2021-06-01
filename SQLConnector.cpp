@@ -56,7 +56,7 @@ int SQLConnector::applyCard(std::string && table,Token &token)//Ê¹ÓÃTokenÀ´´«µÝ¿
 	return id_card;
 }
 
-void SQLConnector::updateCard(string && table,Token&token,string mode)
+void SQLConnector::updateCard(string  table,Token&token,string mode)
 {
 	string update;
 	if (mode == "bind")//Á½ÖÖ¸üÐÂÇé¿ö£¬Ò»ÊÇ°ó¶¨¿¨¸üÐÂ
@@ -94,7 +94,7 @@ vector<Token> SQLConnector::getCard(string && table,int id )//idÊÇ¿ÉÑ¡Ïî
 	return tokens;
 }
 
-void SQLConnector::record(string&& table, int& id, string& info)//¼ÇÂ¼Á÷Ë®
+void SQLConnector::record(string table, int& id, string& info)//¼ÇÂ¼Á÷Ë®
 {
 	string t;
 	if (table == "campuscard")
@@ -129,10 +129,11 @@ vector<Record> SQLConnector::getRecord(string table, int id)
 
 bool SQLConnector::check(string &&table,int studyID)
 {
-	int count = table == "campuscard" ? 1 : 3;
+	int num=0;
 	string query = "select ID from "+table+" where StudyID="+to_string(studyID);
 	unique_ptr <ResultSet> res(state->executeQuery(query));
-	for(int i=0;i<count;i++)
-	res->next();
-	return res != NULL;
+	while (res->next())
+		num++;
+	return num ==(table == "campuscard" ? 1 : 3);
+
 }

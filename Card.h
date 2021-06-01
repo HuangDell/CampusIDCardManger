@@ -5,6 +5,7 @@
 #include <iostream>
 #include <string>
 #include <sstream>
+#include <climits>
 #define LENGTH 38
 #define FOCUS() printf("\t\t\t")
 inline void drawLine(int length,int tab=3) //»æ»­±í¸ñ
