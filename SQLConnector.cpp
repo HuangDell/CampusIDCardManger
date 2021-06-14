@@ -25,7 +25,7 @@ SQLConnector::SQLConnector() //链接服务器
 	}
 	catch (...)
 	{
-		cout << "连接服务器失败！请联系管理人员！\n";
+		cout << "连接服务器失败！请联系管理人员！\n";//无法连接到数据库
 		system("pause");
 		exit(-1);
 	}
@@ -105,7 +105,7 @@ void SQLConnector::record(string table, int& id, string& info)//记录流水
 	state->execute(insert);
 }
 
-vector<Record> SQLConnector::getRecord(string table, int id)
+vector<Record> SQLConnector::getRecord(string table, int id)//从数据库中读取信息
 {
 	vector<Record> records;
 	string type = table == "campuscard" ? "'校园卡'" : "'储蓄卡'";

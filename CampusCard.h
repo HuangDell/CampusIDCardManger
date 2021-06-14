@@ -1,6 +1,6 @@
 #pragma once
 #include "Card.h"
-class CampusCard :public Card
+class CampusCard :public Card//CampusCard¶¨Òå
 {
 	static Card*instance;
 public:

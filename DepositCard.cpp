@@ -1,7 +1,7 @@
 #include "DepositCard.h"
 using namespace std;
 
-void DepositCard::menu()
+void DepositCard::menu()//menu的具体实现
 {
 	int choose;
 	while (true)
@@ -33,7 +33,7 @@ void DepositCard::menu()
 			break;
 		case 4:return;
 		default:
-			cin.clear();
+			cin.clear();//对错误输入进行清理
 			cin.ignore(numeric_limits<streamsize>::max(), '\n');
 			continue;
 		}
@@ -42,7 +42,7 @@ void DepositCard::menu()
 	}
 
 }
-void DepositCard::showCards(int id)
+void DepositCard::showCards(int id)//打印储蓄卡信息
 {
 	auto tokens = connector->getCard("depositcard", id);
 	system("cls");
@@ -84,7 +84,7 @@ void DepositCard::showCards(int id)
 void DepositCard::binding(int deposit)
 {
 	int campus;
-	if (connector->getCard("depositcard", deposit)[0].bindingid.size())
+	if (connector->getCard("depositcard", deposit)[0].bindingid.size())//判断是否已经绑定校园卡
 	{
 		printf("\t\t\t您已达绑定校园卡数目上限！\n");
 		return;
@@ -98,7 +98,7 @@ void DepositCard::binding(int deposit)
 		cin.ignore(numeric_limits<streamsize>::max(), '\n');
 	}
 	auto tokens = connector->getCard("campuscard",campus);
-	if (tokens.empty())
+	if (tokens.empty())//判断是否存在
 	{
 		printf("\t\t\t未查询到校园卡号为:%d的校园卡\n", campus);
 		goto Again;
@@ -110,7 +110,7 @@ void DepositCard::binding(int deposit)
 
 		if (check())
 		{
-			connector->updateCard("campuscard",token, "bind");
+			connector->updateCard("campuscard",token, "bind");//将数据写入数据库中
 			auto deposit_token = connector->getCard("depositcard",deposit)[0];
 			deposit_token.bindingid = to_string(campus);
 			connector->updateCard("depositcard",deposit_token,"bind");
@@ -120,7 +120,7 @@ void DepositCard::binding(int deposit)
 	}
 }
 
-void DepositCard::applyCard()
+void DepositCard::applyCard()//申请储蓄卡
 {
 	Again:
 	Token token;
@@ -167,7 +167,7 @@ void DepositCard::deposit(int deposit)
 }
 
 
-void DepositCard::transfer(int id)
+void DepositCard::transfer(int id)//储蓄卡转账功能
 {
 	auto self = connector->getCard("depositcard", id)[0];
 	int to_id;

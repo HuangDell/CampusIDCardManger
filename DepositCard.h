@@ -1,6 +1,6 @@
 #pragma once
 #include "Card.h"
-class DepositCard :public Card
+class DepositCard :public Card//DepositCard定义
 {
 	static Card* instance;
 public:
@@ -9,6 +9,7 @@ public:
 	void showCards(int id=0);
 	void binding(int id);
 	void deposit(int id);
-	void  transfer(int id);
+	void cost(int id) {};
+	void  transfer(int id);//将cost换名为transfer
 	static Card* getInstance() { return instance; }
 };

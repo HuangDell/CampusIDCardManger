@@ -2,7 +2,7 @@
 #include "Card.h"
 using namespace std;
 
-void Card::applyCard(int &id,string &name)
+void Card::applyCard(int &id,string &name)//申请校园卡的通用部分
 {
 	printf("\t\t\t请输入你的姓名：");
 	while(cin >> name)
@@ -23,7 +23,7 @@ void Card::applyCard(int &id,string &name)
 }
 
 
-bool Card::check()
+bool Card::check()//判断用户是否确认
 {
 	Again:
 	string choose;
@@ -38,7 +38,7 @@ bool Card::check()
 		goto Again;
 }
 
-void Card::showRecord(string table, int id)
+void Card::showRecord(string table, int id)//打印流水信息
 {
 	auto records = connector->getRecord(table, id);
 	drawLine(70, 1);
@@ -49,7 +49,7 @@ void Card::showRecord(string table, int id)
 }
 
 
- bool cmp(Token t1, Token t2)
+ bool cmp(Token t1, Token t2)//排序
 {
 	return t1.money > t2.money;
 }

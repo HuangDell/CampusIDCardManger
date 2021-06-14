@@ -234,7 +234,7 @@ void CampusCard::applyCard()
 	}
 }
 
-void CampusCard::cost(int id)
+void CampusCard::cost(int id)//消费函数
 {
 	int cost;
 	auto campus_token = connector->getCard("campuscard", id)[0];
@@ -251,7 +251,7 @@ void CampusCard::cost(int id)
 		}
 	
 	}
-	if (campus_token.money < cost && campus_token.bindingid.size() != 0)
+	if (campus_token.money < cost && campus_token.bindingid.size() != 0)//判断可以使用组合支付的情况
 	{
 		printf("\t\t\t余额不足!已绑定储蓄卡,是否组合支付?\n");
 		if (check())
@@ -271,7 +271,7 @@ void CampusCard::cost(int id)
 			vector<Token> deposit;
 			for (auto& num : deposit_cards)
 				deposit.push_back(connector->getCard("depositcard", num)[0]);
-			sort(deposit.begin(), deposit.end(), cmp);
+			sort(deposit.begin(), deposit.end(), cmp);//将已绑定的储蓄卡按照余额降序排序
 			int sum = 0;
 			for (auto& token : deposit)
 				sum += token.money;
@@ -280,7 +280,7 @@ void CampusCard::cost(int id)
 				printf("\t\t\t组合支付余额不足!\n");
 				return;
 			}
-			if (deposit[0].money < cost)
+			if (deposit[0].money < cost)//从余额最多的开始消费
 			{
 				string info = "消费:" + to_string(deposit[0].money) + "元";
 				deposit[0].money = 0;
@@ -320,7 +320,7 @@ void CampusCard::cost(int id)
 			return;
 		}
 	}
-	if (cost)
+	if (cost)//不需要组合支付的情况
 	{
 		campus_token.money -= cost;
 		string info = "消费:" + to_string(cost) + "元";

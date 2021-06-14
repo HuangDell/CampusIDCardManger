@@ -1,6 +1,6 @@
 #pragma once
 #include <string>
-struct Token {
+struct Token {//用于类与类直接的信息传递
 	std::string name;
 	std::string bindingid;
 	std::string depart;

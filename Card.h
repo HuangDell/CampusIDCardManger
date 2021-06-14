@@ -22,8 +22,11 @@ protected:
 	SQLConnector* connector = SQLConnector::getInstance();
 public:
 	virtual void applyCard(int &id,std::string &name);
-	virtual void  menu() = 0;
-	virtual void showCards(int id = 0) = 0;
+	virtual void  menu() = 0;//定义抽象函数menu
+	virtual void showCards(int id = 0) = 0;//定义抽象函数显示信息
+	virtual void deposit(int id)=0;//定义抽箱函数存款
+	virtual void binding(int id)=0;//定义抽象函数绑定
+	virtual void cost(int id)=0;//定义抽象函数消费
 	bool check();
 	void showRecord(std::string table, int id = 0);
 };
